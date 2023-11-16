@@ -2,12 +2,12 @@
 <html>
 <head>
     <title>Email Confirmation</title>
-    <script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4.7.0/stitch.js"></script>
+    <script src="https://realmweb.mongodbstitch.com/sdk/realm-web-sdk.js"></script>
 </head>
 <body>
     <script>
         // Initialize the MongoDB Realm App with your App ID
-        const app = stitch.Stitch.initializeDefaultAppClient('application-0-kfllu');
+        const app = Realm.App({ id: 'snktrkapp-dakof' }); // Replace 'your-app-id' with your actual app ID
 
         // Parse the URL query string to get the token and tokenId
         const urlParams = new URLSearchParams(window.location.search);
@@ -26,3 +26,4 @@
     </script>
 </body>
 </html>
+
