@@ -1,4 +1,4 @@
-﻿<!-- confirmEmail.html -->
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>Email Confirmation</title>
@@ -7,23 +7,32 @@
 <body>
     <script>
         // Initialize the MongoDB Realm App with your App ID
-        const app = Realm.App({ id: 'snktrkapp-dakof' }); // Replace 'your-app-id' with your actual app ID
+        const app = new Realm.App({ id: 'your-app-id' }); // Replace 'your-app-id' with your actual app ID
 
-        // Parse the URL query string to get the token and tokenId
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
-        const tokenId = urlParams.get('tokenId');
+        // Function to confirm user's email
+        async function confirmEmail() {
+            try {
+                // Parse the URL query string to get the token and tokenId
+                const urlParams = new URLSearchParams(window.location.search);
+                const token = urlParams.get('token');
+                const tokenId = urlParams.get('tokenId');
 
-        // Confirm the user's email
-        app.emailPasswordAuth.confirmUser(token, tokenId)
-            .then(() => {
+                // Check if token and tokenId are available
+                if (!token || !tokenId) {
+                    throw new Error("Token and tokenId not found in URL parameters.");
+                }
+
+                // Confirm the user's email
+                await app.emailPasswordAuth.confirmUser(token, tokenId);
                 document.body.innerHTML = '<p>Email confirmation successful!</p>';
-            })
-            .catch(err => {
+            } catch (err) {
                 console.error(err);
-                document.body.innerHTML = '<p>Email confirmation failed!</p>';
-            });
+                document.body.innerHTML = `<p>Email confirmation failed: ${err.message}</p>`;
+            }
+        }
+
+        // Call confirmEmail function when the script loads
+        confirmEmail();
     </script>
 </body>
 </html>
-
