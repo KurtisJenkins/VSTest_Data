@@ -2,30 +2,39 @@
 <html>
 <head>
     <title>Email Confirmation</title>
-    <!-- Ensure that this is the correct and accessible URL for the Realm SDK -->
+    <!-- Include the Realm SDK from a CDN -->
     <script src="https://unpkg.com/realm-web/dist/bundle.iife.js"></script>
 </head>
 <body>
     <script>
+        
         // This function will run when the window is fully loaded,
-        // ensuring that the Realm SDK script has been loaded and executed
+        // ensuring that the Realm SDK script has been loaded and executed.
         window.onload = function() {
+
             // Initialize the MongoDB Realm App with your App ID
-            const app = new Realm.App({ id: 'snktrkapp-dakof' }); // Replace 'your-app-id' with your actual app ID
+            const appId = 'snktrkapp-dakof';
+            const app = new Realm.App({ id: appId });
 
             // Parse the URL query string to get the token and tokenId
             const urlParams = new URLSearchParams(window.location.search);
             const token = urlParams.get('token');
             const tokenId = urlParams.get('tokenId');
 
-            // Confirm the user's email
+            // Check if token and tokenId are present
+            if (!token || !tokenId) {
+                document.body.innerHTML = '<p>Error: Token or TokenId missing in the URL.</p>';
+                return;
+            }
+
+            // Attempt to confirm the user's email
             app.emailPasswordAuth.confirmUser(token, tokenId)
                 .then(() => {
                     document.body.innerHTML = '<p>Email confirmation successful!</p>';
                 })
                 .catch(err => {
                     console.error(err);
-                    document.body.innerHTML = '<p>Email confirmation failed!</p>';
+                    document.body.innerHTML = '<p>Email confirmation failed. Please check the error logs for details.</p>';
                 });
         };
     </script>
