@@ -7,30 +7,31 @@
 </head>
 <body>
     <script>
-        const appId = 'snktrkapp-dakof';
-        const app = new Realm.App({ id: appId });
-    
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
-        const tokenId = urlParams.get('tokenId');
-    
-        console.log("Token:", token);  // For debugging
-        console.log("TokenId:", tokenId);  // For debugging
-    
-        if (!token || !tokenId) {
-            document.body.innerHTML = '<p>Error: Token or TokenId missing in the URL.</p>';
-            return;
-        }
-    
-        app.emailPasswordAuth.confirmUser(token, tokenId)
-            .then(() => {
-                document.body.innerHTML = '<p>Email confirmation successful!</p>';
-            })
-            .catch(err => {
-                console.error(err);
-                document.body.innerHTML = `<p>Email confirmation failed: ${err.message}. Please check the error logs for details.</p>`;
-            });
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const appId = 'snktrkapp-dakof';
+            const app = new Realm.App({ id: appId });
+        
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            const tokenId = urlParams.get('tokenId');
+        
+            console.log("Token:", token);  // For debugging
+            console.log("TokenId:", tokenId);  // For debugging
+        
+            if (!token || !tokenId) {
+                document.body.innerHTML = '<p>Error: Token or TokenId missing in the URL.</p>';
+                return;
+            }
+        
+            app.emailPasswordAuth.confirmUser(token, tokenId)
+                .then(() => {
+                    document.body.innerHTML = '<p>Email confirmation successful!</p>';
+                })
+                .catch(err => {
+                    console.error(err);
+                    document.body.innerHTML = `<p>Email confirmation failed: ${err.message}. Please check the error logs for details.</p>`;
+                });
+        });
     </script>
-    
 </body>
 </html>
