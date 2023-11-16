@@ -1,38 +1,33 @@
-﻿<!DOCTYPE html>
+﻿<!-- confirmEmail.html -->
 <html>
 <head>
     <title>Email Confirmation</title>
+    <!-- Ensure that this is the correct and accessible URL for the Realm SDK -->
     <script src="https://realmweb.mongodbstitch.com/sdk/realm-web-sdk.js"></script>
 </head>
 <body>
     <script>
-        // Initialize the MongoDB Realm App with your App ID
-        const app = new Realm.App({ id: 'snktrkapp-dakof' }); // Replace 'your-app-id' with your actual app ID
+        // This function will run when the window is fully loaded,
+        // ensuring that the Realm SDK script has been loaded and executed
+        window.onload = function() {
+            // Initialize the MongoDB Realm App with your App ID
+            const app = new Realm.App({ id: 'snktrkapp-dakof' }); // Replace 'your-app-id' with your actual app ID
 
-        // Function to confirm user's email
-        async function confirmEmail() {
-            try {
-                // Parse the URL query string to get the token and tokenId
-                const urlParams = new URLSearchParams(window.location.search);
-                const token = urlParams.get('token');
-                const tokenId = urlParams.get('tokenId');
+            // Parse the URL query string to get the token and tokenId
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            const tokenId = urlParams.get('tokenId');
 
-                // Check if token and tokenId are available
-                if (!token || !tokenId) {
-                    throw new Error("Token and tokenId not found in URL parameters.");
-                }
-
-                // Confirm the user's email
-                await app.emailPasswordAuth.confirmUser(token, tokenId);
-                document.body.innerHTML = '<p>Email confirmation successful!</p>';
-            } catch (err) {
-                console.error(err);
-                document.body.innerHTML = `<p>Email confirmation failed: ${err.message}</p>`;
-            }
-        }
-
-        // Call confirmEmail function when the script loads
-        confirmEmail();
+            // Confirm the user's email
+            app.emailPasswordAuth.confirmUser(token, tokenId)
+                .then(() => {
+                    document.body.innerHTML = '<p>Email confirmation successful!</p>';
+                })
+                .catch(err => {
+                    console.error(err);
+                    document.body.innerHTML = '<p>Email confirmation failed!</p>';
+                });
+        };
     </script>
 </body>
 </html>
